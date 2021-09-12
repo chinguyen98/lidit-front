@@ -1,17 +1,15 @@
 import { NextPage } from "next";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  FormControl,
-  FormLabel,
-  Input,
   Button,
-  FormErrorMessage,
 } from "@chakra-ui/react";
 import styles from "./Register.module.css";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import InputField from "../../components/InputField";
+import { useMutation } from "urql";
+import { useRegisterMutation } from "../../generated/graphql";
 
 interface registerProps { }
 
@@ -31,22 +29,21 @@ const schema = yup.object().shape({
 
 const Register: NextPage<registerProps> = () => {
   const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
+  const [, register] = useRegisterMutation();
 
   const {
-    register,
+    register: registerForm,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    console.log({ errors });
-  }, [errors])
-
-  const onSubmit = ({ username, password }: FormData) => {
+  const onSubmit = async ({ username, password }: FormData) => {
     setIsSubmiting(true);
-    console.log({ username, password });
+    const response = await register({ username, password });
+    console.log({ response })
+    setIsSubmiting(false);
   };
 
   return (
@@ -57,7 +54,7 @@ const Register: NextPage<registerProps> = () => {
         fieldType="text"
         errors={errors}
         placeholder="Enter your username!"
-        register={register}
+        register={registerForm}
       />
       <InputField
         displayName="Password"
@@ -65,7 +62,7 @@ const Register: NextPage<registerProps> = () => {
         fieldType="password"
         errors={errors}
         placeholder="Enter your password!"
-        register={register}
+        register={registerForm}
       />
       <InputField
         displayName="Retype password"
@@ -73,7 +70,7 @@ const Register: NextPage<registerProps> = () => {
         fieldType="password"
         errors={errors}
         placeholder="Retype your password!"
-        register={register}
+        register={registerForm}
       />
       <Button mt={4} colorScheme="facebook" type="submit" isLoading={isSubmiting}>
         Register
