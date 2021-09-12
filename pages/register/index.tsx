@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FormControl,
   FormLabel,
@@ -11,6 +11,7 @@ import styles from "./Register.module.css";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import InputField from "../../components/InputField";
 
 interface registerProps { }
 
@@ -29,6 +30,8 @@ const schema = yup.object().shape({
 });
 
 const Register: NextPage<registerProps> = () => {
+  const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -42,49 +45,38 @@ const Register: NextPage<registerProps> = () => {
   }, [errors])
 
   const onSubmit = ({ username, password }: FormData) => {
+    setIsSubmiting(true);
     console.log({ username, password });
   };
 
   return (
     <form className={styles.register} onSubmit={handleSubmit(onSubmit)}>
-      <FormControl width="50%" id="username" isInvalid={errors?.username} isRequired>
-        <FormLabel htmlFor="username">Username</FormLabel>
-        <Input
-          {...register("username")}
-          placeholder="Enter ur username!"
-          name="username"
-          type="text"
-        />
-        <FormErrorMessage>
-          {errors.username?.message}
-        </FormErrorMessage>
-      </FormControl>
-      <FormControl width="50%" id="password" isInvalid={errors?.password} isRequired>
-        <FormLabel htmlFor="password">Password</FormLabel>
-        <Input
-          {...register("password")}
-          placeholder="Enter ur password!"
-          name="password"
-          type="password"
-        />
-        <FormErrorMessage>
-          {errors.password?.message}
-        </FormErrorMessage>
-      </FormControl>
-      <FormControl width="50%" id="retypedPassword" isInvalid={errors?.retypedPassword} isRequired>
-        <FormLabel htmlFor="retypedPassword">Retype password</FormLabel>
-        <Input
-          {...register("retypedPassword")}
-          placeholder="Retype your password!"
-          name="retypedPassword"
-          type="password"
-        />
-        <FormErrorMessage>
-          {errors.retypedPassword?.message}
-        </FormErrorMessage>
-      </FormControl>
-      <Button mt={4} colorScheme="facebook" type="submit">
-        Submit
+      <InputField
+        displayName="Username"
+        fieldName="username"
+        fieldType="text"
+        errors={errors}
+        placeholder="Enter your username!"
+        register={register}
+      />
+      <InputField
+        displayName="Password"
+        fieldName="password"
+        fieldType="password"
+        errors={errors}
+        placeholder="Enter your password!"
+        register={register}
+      />
+      <InputField
+        displayName="Retype password"
+        fieldName="retypedPassword"
+        fieldType="password"
+        errors={errors}
+        placeholder="Retype your password!"
+        register={register}
+      />
+      <Button mt={4} colorScheme="facebook" type="submit" isLoading={isSubmiting}>
+        Register
       </Button>
     </form>
   );
