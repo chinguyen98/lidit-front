@@ -10,6 +10,7 @@ interface inputFieldProps {
   fieldType: HTMLInputTypeAttribute;
   errors: any;
   register: any;
+  responseError?: string | undefined;
 }
 
 const InputField: NextPage<inputFieldProps> = ({
@@ -19,9 +20,10 @@ const InputField: NextPage<inputFieldProps> = ({
   fieldType,
   errors,
   register,
+  responseError,
 }) => {
   return (
-    <FormControl width="50%" id={fieldName} isInvalid={errors[fieldName]} isRequired>
+    <FormControl width="50%" id={fieldName} isInvalid={errors[fieldName] || responseError} isRequired>
       <FormLabel htmlFor={fieldName}>{displayName}</FormLabel>
       <Input
         {...register(fieldName)}
@@ -30,7 +32,7 @@ const InputField: NextPage<inputFieldProps> = ({
         type={fieldType}
       />
       <FormErrorMessage>
-        {errors[fieldName]?.message}
+        {errors[fieldName]?.message || responseError}
       </FormErrorMessage>
     </FormControl>
   )

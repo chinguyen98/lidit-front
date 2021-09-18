@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import InputField from "../../components/InputField";
 import { useMutation } from "urql";
 import { useRegisterMutation } from "../../generated/graphql";
+import { toErrorMap } from "../../utils/toErrorMap";
 
 interface registerProps { }
 
@@ -29,6 +30,8 @@ const schema = yup.object().shape({
 
 const Register: NextPage<registerProps> = () => {
   const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
+  const [responseErrors, setResponseErrors] = useState<Record<string, string> | null>(null);
+
   const [, register] = useRegisterMutation();
 
   const {
@@ -42,7 +45,9 @@ const Register: NextPage<registerProps> = () => {
   const onSubmit = async ({ username, password }: FormData) => {
     setIsSubmiting(true);
     const response = await register({ username, password });
-    console.log({ response })
+    if (response.data?.register.errors) {
+      setResponseErrors(toErrorMap(response.data.register.errors));
+    }
     setIsSubmiting(false);
   };
 
@@ -55,6 +60,7 @@ const Register: NextPage<registerProps> = () => {
         errors={errors}
         placeholder="Enter your username!"
         register={registerForm}
+        responseError={responseErrors?.username}
       />
       <InputField
         displayName="Password"
@@ -63,6 +69,7 @@ const Register: NextPage<registerProps> = () => {
         errors={errors}
         placeholder="Enter your password!"
         register={registerForm}
+        responseError={responseErrors?.password}
       />
       <InputField
         displayName="Retype password"
