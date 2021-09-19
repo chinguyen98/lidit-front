@@ -1,16 +1,14 @@
 import { NextPage } from "next";
 import React, { useState } from "react";
-import {
-  Button,
-} from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import styles from "./Register.module.css";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import InputField from "../../components/InputField";
-import { useMutation } from "urql";
 import { useRegisterMutation } from "../../generated/graphql";
 import { toErrorMap } from "../../utils/toErrorMap";
+import { useRouter } from "next/dist/client/router";
 
 interface registerProps { }
 
@@ -34,6 +32,8 @@ const Register: NextPage<registerProps> = () => {
 
   const [, register] = useRegisterMutation();
 
+  const router = useRouter();
+
   const {
     register: registerForm,
     handleSubmit,
@@ -47,6 +47,8 @@ const Register: NextPage<registerProps> = () => {
     const response = await register({ username, password });
     if (response.data?.register.errors) {
       setResponseErrors(toErrorMap(response.data.register.errors));
+    } else if (response.data?.register.user) {
+      router.push('/');
     }
     setIsSubmiting(false);
   };
