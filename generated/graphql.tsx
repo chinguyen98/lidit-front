@@ -147,12 +147,11 @@ export const RegisterDocument = gql`
       message
     }
     user {
-      id
-      username
+      ...RegularUser
     }
   }
 }
-    `;
+    ${RegularUserFragmentDoc}`;
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
@@ -165,12 +164,11 @@ export const ProfileDocument = gql`
       message
     }
     user {
-      id
-      username
+      ...RegularUser
     }
   }
 }
-    `;
+    ${RegularUserFragmentDoc}`;
 
 export function useProfileQuery(options: Omit<Urql.UseQueryArgs<ProfileQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<ProfileQuery>({ query: ProfileDocument, ...options });

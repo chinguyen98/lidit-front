@@ -5,8 +5,7 @@ query Profile {
       message
     }
     user {
-      id
-      username
+      ...RegularUser
     }
   }
 }
