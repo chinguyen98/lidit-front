@@ -2,7 +2,7 @@ import { Box, Flex, Link } from '@chakra-ui/layout';
 import { NextPage } from 'next';
 import React from 'react';
 import NextLink from 'next/link';
-import { useProfileQuery } from '../../generated/graphql';
+import { useLogoutMutation, useProfileQuery } from '../../generated/graphql';
 import { Button } from '@chakra-ui/button';
 
 interface navbarProps {
@@ -11,6 +11,11 @@ interface navbarProps {
 
 const Navbar: NextPage<navbarProps> = () => {
   const [{ data, fetching }] = useProfileQuery();
+  const [{ fetching: isLogoutFetching }, logout] = useLogoutMutation();
+
+  const handleLogout = () => {
+    logout();
+  }
 
   let body = null;
 
@@ -31,7 +36,7 @@ const Navbar: NextPage<navbarProps> = () => {
     body = (
       <Flex>
         <Box mr="4">{data?.profile?.user?.username}</Box>
-        <Button variant="link">Logout</Button>
+        <Button onClick={handleLogout} isLoading={isLogoutFetching} variant="link">Logout</Button>
       </Flex>
     )
   }
