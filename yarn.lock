@@ -4934,6 +4934,13 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
+next-urql@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/next-urql/-/next-urql-3.2.1.tgz#ad2857c6ef577c36d3f29004d14d19d6cb8be1dc"
+  integrity sha512-b8KhQCSZGfxkBKdKMmDihi0m/sYa+i6r8CtgkjqeZrAUdksC7p/gQyCiknZOGJSVyNIc4FHUcnLsKoWqqHGrYQ==
+  dependencies:
+    react-ssr-prepass "^1.4.0"
+
 next@11.1.2:
   version "11.1.2"
   resolved "https://registry.yarnpkg.com/next/-/next-11.1.2.tgz#527475787a9a362f1bc916962b0c0655cc05bc91"
@@ -5660,7 +5667,7 @@ react-hook-form@^7.15.2:
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.15.2.tgz#c4d4fa44a5df755648ab19034062ae37087536b0"
   integrity sha512-tPcLlsTXaOtZkyc1IGGaJfQ6amo2sJiM6DDufE7WG+S4N8s5Wr60HGtnKS7gPnnZL93pFPQYrSj7WDB5An2VVw==
 
-react-is@17.0.2:
+react-is@17.0.2, react-is@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
@@ -5693,6 +5700,11 @@ react-remove-scroll@2.4.1:
     tslib "^1.0.0"
     use-callback-ref "^1.2.3"
     use-sidecar "^1.0.1"
+
+react-ssr-prepass@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-ssr-prepass/-/react-ssr-prepass-1.4.0.tgz#33a3db19414f0f8f9f3f781c88f760ae366b4f51"
+  integrity sha512-0SzdmiQUtHvhxCabHg9BI/pkJfijGkQ0jQL6fC4YFy7idaDOuaiQLsajIkkNxffFXtJFHIWFITlve2WB88e0Jw==
 
 react-style-singleton@^2.1.0:
   version "2.1.1"

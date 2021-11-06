@@ -1,16 +1,18 @@
-import { NextPage } from "next";
-import React, { useState } from "react";
-import { Button } from "@chakra-ui/react";
-import styles from "./Login.module.css";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import InputField from "../../components/InputField";
-import { useRouter } from "next/dist/client/router";
-import { useLoginMutation } from "../../generated/graphql";
-import { toErrorMap } from "../../utils/toErrorMap";
+import { Button } from '@chakra-ui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { NextPage } from 'next';
+import { withUrqlClient } from 'next-urql';
+import { useRouter } from 'next/dist/client/router';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import InputField from '../../components/InputField';
+import { useLoginMutation } from '../../generated/graphql';
+import { createUrqlClient } from '../../utils/createUrqlClient';
+import { toErrorMap } from '../../utils/toErrorMap';
+import styles from './Login.module.css';
 
-interface loginProps { }
+interface loginProps {}
 
 interface FormData {
   username: string;
@@ -18,13 +20,22 @@ interface FormData {
 }
 
 const schema = yup.object().shape({
-  username: yup.string().required("Username is required!").min(3, 'Username length must larger than 2!'),
-  password: yup.string().required("Password is required!").min(3, 'Password length must larger than 2!'),
+  username: yup
+    .string()
+    .required('Username is required!')
+    .min(3, 'Username length must larger than 2!'),
+  password: yup
+    .string()
+    .required('Password is required!')
+    .min(3, 'Password length must larger than 2!'),
 });
 
 const Login: NextPage<loginProps> = () => {
   const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
-  const [responseErrors, setResponseErrors] = useState<Record<string, string> | null>(null);
+  const [responseErrors, setResponseErrors] = useState<Record<
+    string,
+    string
+  > | null>(null);
 
   const [, login] = useLoginMutation();
 
@@ -71,11 +82,16 @@ const Login: NextPage<loginProps> = () => {
         register={registerForm}
         responseError={responseErrors?.password}
       />
-      <Button mt={4} colorScheme="facebook" type="submit" isLoading={isSubmiting}>
+      <Button
+        mt={4}
+        colorScheme="facebook"
+        type="submit"
+        isLoading={isSubmiting}
+      >
         Login
       </Button>
     </form>
   );
 };
 
-export default Login;
+export default withUrqlClient(createUrqlClient)(Login);
