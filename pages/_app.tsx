@@ -13,6 +13,7 @@ import {
 } from '@urql/exchange-graphcache';
 import {
   LoginMutation,
+  LogoutMutation,
   ProfileDocument,
   ProfileQuery,
   RegisterMutation,
@@ -37,7 +38,6 @@ const client = createClient({
   },
   exchanges: [
     dedupExchange,
-    fetchExchange,
     cacheExchange({
       updates: {
         Mutation: {
@@ -73,9 +73,20 @@ const client = createClient({
               }
             );
           },
+          logout: (_result: LogoutMutation, args, cache, info) => {
+            betterUpdateQuery<LogoutMutation, ProfileQuery>(
+              cache,
+              { query: ProfileDocument },
+              _result,
+              () => {
+                return { profile: null };
+              }
+            );
+          },
         },
       },
     }),
+    fetchExchange,
   ],
 });
 
