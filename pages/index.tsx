@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   const [{ data }] = usePostsQuery();
 
   return (
-    <>
+    <div>
       <Navbar />
       <div>Hello I'm Next!</div>
       <br />
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
           ))
         )}
       </div>
-    </>
+    </div>
   );
 };
 
