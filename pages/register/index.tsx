@@ -17,6 +17,7 @@ interface registerProps {}
 interface FormData {
   username: string;
   password: string;
+  email: string;
 }
 
 const schema = yup.object().shape({
@@ -24,6 +25,11 @@ const schema = yup.object().shape({
     .string()
     .required('Username is required!')
     .min(3, 'Username length must larger than 2!'),
+  email: yup
+    .string()
+    .required('Email is required!')
+    .min(3, 'Email length must larger than 2!')
+    .email('Invalid email type!'),
   password: yup
     .string()
     .required('Password is required!')
@@ -53,9 +59,9 @@ const Register: NextPage<registerProps> = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async ({ username, password }: FormData) => {
+  const onSubmit = async ({ username, password, email }: FormData) => {
     setIsSubmiting(true);
-    const response = await register({ username, password });
+    const response = await register({ options: { username, password, email } });
     if (response.data?.register.errors) {
       setResponseErrors(toErrorMap(response.data.register.errors));
     } else if (response.data?.register.user) {
@@ -74,6 +80,15 @@ const Register: NextPage<registerProps> = () => {
         placeholder="Enter your username!"
         register={registerForm}
         responseError={responseErrors?.username}
+      />
+      <InputField
+        displayName="Email"
+        fieldName="email"
+        fieldType="text"
+        errors={errors}
+        placeholder="Enter your email!"
+        register={registerForm}
+        responseError={responseErrors?.email}
       />
       <InputField
         displayName="Password"

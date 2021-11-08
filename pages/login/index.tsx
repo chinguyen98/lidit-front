@@ -15,15 +15,15 @@ import styles from './Login.module.css';
 interface loginProps {}
 
 interface FormData {
-  username: string;
+  usernameOrEmail: string;
   password: string;
 }
 
 const schema = yup.object().shape({
-  username: yup
+  usernameOrEmail: yup
     .string()
-    .required('Username is required!')
-    .min(3, 'Username length must larger than 2!'),
+    .required('Username or email is required!')
+    .min(3, 'Username or email length must larger than 2!'),
   password: yup
     .string()
     .required('Password is required!')
@@ -49,10 +49,10 @@ const Login: NextPage<loginProps> = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async ({ username, password }: FormData) => {
+  const onSubmit = async ({ usernameOrEmail, password }: FormData) => {
     setIsSubmiting(true);
 
-    const response = await login({ options: { username, password } });
+    const response = await login({ usernameOrEmail, password });
     if (response.data?.login.errors) {
       setResponseErrors(toErrorMap(response.data.login.errors));
     } else if (response.data?.login.user) {
@@ -65,13 +65,13 @@ const Login: NextPage<loginProps> = () => {
   return (
     <form className={styles.login} onSubmit={handleSubmit(onSubmit)}>
       <InputField
-        displayName="Username"
-        fieldName="username"
+        displayName="Username or Email"
+        fieldName="usernameOrEmail"
         fieldType="text"
         errors={errors}
-        placeholder="Enter your username!"
+        placeholder="Enter your username or email!"
         register={registerForm}
-        responseError={responseErrors?.username}
+        responseError={responseErrors?.usernameOrEmail}
       />
       <InputField
         displayName="Password"
