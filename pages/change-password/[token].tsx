@@ -9,9 +9,10 @@ import { Button } from '@chakra-ui/button';
 import { useChangePasswordMutation } from '../../generated/graphql';
 import { toErrorMap } from '../../utils/toErrorMap';
 import { useRouter } from 'next/dist/client/router';
-import { Box } from '@chakra-ui/layout';
+import { Box, Link } from '@chakra-ui/layout';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
+import NextLink from 'next/link';
 
 interface FormData {
   newPassword: string;
@@ -64,7 +65,15 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
         register={registerForm}
         responseError={responseErrors?.newPassword}
       />
-      <Box color="red">{responseErrors?.token}</Box>
+      {responseErrors?.token && (
+        <Box>
+          <Box color="red">{responseErrors?.token}</Box>
+          <NextLink href="/forgot-password">
+            <Link>Click here to get a new one!</Link>
+          </NextLink>
+        </Box>
+      )}
+
       <Button
         mt={4}
         colorScheme="facebook"

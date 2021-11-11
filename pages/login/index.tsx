@@ -11,6 +11,8 @@ import { useLoginMutation } from '../../generated/graphql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
 import { toErrorMap } from '../../utils/toErrorMap';
 import styles from './Login.module.css';
+import NextLink from 'next/link';
+import { Link } from '@chakra-ui/layout';
 
 interface loginProps {}
 
@@ -82,6 +84,9 @@ const Login: NextPage<loginProps> = () => {
         register={registerForm}
         responseError={responseErrors?.password}
       />
+      <NextLink href="/forgot-password">
+        <Link>Forgot password?</Link>
+      </NextLink>
       <Button
         mt={4}
         colorScheme="facebook"
