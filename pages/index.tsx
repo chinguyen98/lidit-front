@@ -1,16 +1,21 @@
 import type { NextPage } from 'next';
 import { withUrqlClient } from 'next-urql';
-import Navbar from '../components/Navbar';
+import MainLayout from '../components/MainLayout';
 import { usePostsQuery } from '../generated/graphql';
 import { createUrqlClient } from '../utils/createUrqlClient';
+import NextLink from 'next/link';
+import { Link } from '@chakra-ui/layout';
 
 const Home: NextPage = () => {
   const [{ data }] = usePostsQuery();
 
   return (
-    <div>
-      <Navbar />
-      <div>Hello I'm Next!</div>
+    <MainLayout>
+      <div>DASHBOARD</div>
+      <NextLink href="/create-post">
+        <Link>Create new post</Link>
+      </NextLink>
+      <br />
       <br />
       <div>
         {!data ? (
@@ -21,7 +26,7 @@ const Home: NextPage = () => {
           ))
         )}
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

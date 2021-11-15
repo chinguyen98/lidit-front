@@ -58,7 +58,11 @@ const Login: NextPage<loginProps> = () => {
     if (response.data?.login.errors) {
       setResponseErrors(toErrorMap(response.data.login.errors));
     } else if (response.data?.login.user) {
-      router.push('/');
+      if (typeof router.query.next === 'string') {
+        router.push(router.query.next || '/');
+      } else {
+        router.push('/');
+      }
     }
 
     setIsSubmiting(false);
